@@ -99,13 +99,13 @@ class SeriesCollectionLifecycle(
 
   fun deleteEmptyCollections() {
     logger.info { "Deleting empty collections" }
+    val toDelete = collectionRepository.findAllEmpty()
     transactionTemplate.executeWithoutResult {
-      val toDelete = collectionRepository.findAllEmpty()
       thumbnailSeriesCollectionRepository.deleteByCollectionIds(toDelete.map { it.id })
       collectionRepository.delete(toDelete.map { it.id })
-
-      toDelete.forEach { eventPublisher.publishEvent(DomainEvent.CollectionDeleted(it)) }
     }
+
+    toDelete.forEach { eventPublisher.publishEvent(DomainEvent.CollectionDeleted(it)) }
   }
 
   fun addThumbnail(thumbnail: ThumbnailSeriesCollection): ThumbnailSeriesCollection {
@@ -133,8 +133,7 @@ class SeriesCollectionLifecycle(
     eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesCollectionDeleted(thumbnail))
   }
 
-  fun getThumbnailBytes(thumbnailId: String): ByteArray? =
-    thumbnailSeriesCollectionRepository.findByIdOrNull(thumbnailId)?.thumbnail
+  fun getThumbnailBytes(thumbnailId: String): ByteArray? = thumbnailSeriesCollectionRepository.findByIdOrNull(thumbnailId)?.thumbnail
 
   fun getThumbnailBytes(
     collection: SeriesCollection,

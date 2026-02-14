@@ -33,6 +33,7 @@ data class Library(
   val seriesCover: SeriesCover = SeriesCover.FIRST,
   val hashFiles: Boolean = true,
   val hashPages: Boolean = false,
+  val hashKoreader: Boolean = false,
   val analyzeDimensions: Boolean = true,
   val oneshotsDirectory: String? = null,
   val unavailableDate: LocalDateTime? = null,
