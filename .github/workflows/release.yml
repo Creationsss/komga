@@ -88,7 +88,7 @@ jobs:
 
       - name: Copy JAR for Docker build
         run: |
-          cp komga/build/libs/komga-${{ needs.version.outputs.version_next }}.jar komga/docker/komga.jar
+          cp komga/build/libs/komga-*.jar komga/docker/komga.jar
 
       - name: Login to ghcr.io
         uses: docker/login-action@v3
