@@ -22,8 +22,10 @@ jobs:
         id: version
         run: |
           VERSION=$(grep '^version=' gradle.properties | cut -d'=' -f2)
+          OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Version: $VERSION"
+          echo "owner=$OWNER" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION, Owner: $OWNER"
 
       - uses: actions/setup-node@v6
         with:
@@ -64,5 +66,5 @@ jobs:
           file: komga/docker/Dockerfile.tpl
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/komga:latest
-            ghcr.io/${{ github.repository_owner }}/komga:${{ steps.version.outputs.version }}
+            ghcr.io/${{ steps.version.outputs.owner }}/komga:latest
+            ghcr.io/${{ steps.version.outputs.owner }}/komga:${{ steps.version.outputs.version }}
