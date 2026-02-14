@@ -45,7 +45,6 @@ jobs:
     name: Build & Push Docker
     runs-on: ubuntu-latest
     needs: version
-    if: needs.version.outputs.should_release
     permissions:
       contents: write
       packages: write
